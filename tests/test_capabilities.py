@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import inspect
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any, get_type_hints
 
-from beesdk import AuthorityLevel, CapabilityCaller, CapabilityResult, CapabilityStatus
+from beesdk.capabilities import CapabilityCaller, CapabilityResult, CapabilityStatus
+from beesdk.modules import AuthorityLevel
 
 
 class ExampleCapabilityCaller:
@@ -17,7 +19,7 @@ class ExampleCapabilityCaller:
             status=CapabilityStatus.OK,
             authority=AuthorityLevel.READ_ONLY,
             summary="completed",
-            data=payload,
+            data=dict(payload),
         )
 
 
@@ -36,7 +38,12 @@ def test_capability_result_defaults_and_statuses() -> None:
         summary="policy refused request",
     )
 
-    assert [status.value for status in CapabilityStatus] == ["ok", "refused", "timeout", "error"]
+    assert [status.value for status in CapabilityStatus] == [
+        "ok",
+        "refused",
+        "timeout",
+        "error",
+    ]
     assert result.data == {}
     assert result.diagnostics == {}
 
@@ -45,4 +52,23 @@ def test_module_facing_call_cannot_receive_host_owned_identity_or_authority() ->
     parameters = list(inspect.signature(CapabilityCaller.call).parameters)
 
     assert parameters == ["self", "capability_name", "payload"]
-    assert not {"authority", "module_id", "run_id", "session_id", "case_type"}.intersection(parameters)
+    assert not {
+        "authority",
+        "module_id",
+        "run_id",
+        "session_id",
+        "case_type",
+    }.intersection(parameters)
+
+
+def test_capability_result_data_and_diagnostics_are_dicts() -> None:
+    hints = get_type_hints(CapabilityResult)
+
+    assert hints["data"] == dict[str, Any]
+    assert hints["diagnostics"] == dict[str, Any]
+
+
+def test_capability_caller_payload_remains_mapping() -> None:
+    hints = get_type_hints(CapabilityCaller.call)
+
+    assert hints["payload"] == Mapping[str, Any]

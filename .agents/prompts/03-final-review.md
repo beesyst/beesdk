@@ -1,26 +1,52 @@
 # BeeSDK final review
 
-Read `AGENTS.md` and `.agents/skills/beesdk-final-review/SKILL.md`.
+Используй только Bee Dev MCP.
 
-## Target
+Прочитай:
 
-- Repository: `beesdk`
-- Worktree: `<TARGET_WORKTREE>`
+- `AGENTS.md`
+- `.agents/skills/beesdk-review-and-close/SKILL.md`
+
+## Основной target
+
+- Project: `beesdk`
+- Instruction worktree: `<INSTRUCTION_WORKTREE>`
+- Target worktree: `<TARGET_WORKTREE>`
 - Expected branch: `<FEATURE_BRANCH>`
 - Base branch: `main`
+- Mode: `<MODE>`
+- Roadmap context: `<ROADMAP_CONTEXT>`
 
-## Approved Issue
+## Утверждённый Issue
 
 ```text
 <FULL_APPROVED_ISSUE>
 ```
 
-## PR and verification evidence
+## Текущий PR
 
 ```text
-<PR_OR_NONE>
-
-<IMPLEMENTATION_EVIDENCE_OR_NONE>
+<CURRENT_PR_OR_NONE>
 ```
 
-Perform one complete read-only review as required by the final-review skill. Return only its consolidated verdict and close package. Do not edit files or run commands.
+## Implementation and verification evidence
+
+```text
+<CURRENT_IMPLEMENTATION_EVIDENCE>
+```
+
+## Дополнительные targets
+
+```text
+<ADDITIONAL_TARGETS_OR_NONE>
+```
+
+Правила:
+
+- Проведи один полный read-only review pass.
+- Для дополнительных targets соблюдай указанные `Role`, `Mode` и `Skill`.
+- Фактические manifest, diff, files, package contents и public contracts имеют приоритет над Issue, PR и отчётами.
+- Не изменяй файлы и не запускай команды.
+- Не добавляй необязательный polish, новые требования или unrelated cleanup.
+- Не требуй `uv lock --check`.
+- Верни результат строго по review skill.

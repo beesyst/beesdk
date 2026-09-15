@@ -1,25 +1,46 @@
 # BeeSDK planning
 
-Read `AGENTS.md` and `.agents/skills/beesdk-plan-iteration/SKILL.md`.
+Используй только Bee Dev MCP.
 
-## Target
+Прочитай:
 
-- Repository: `beesdk`
-- Worktree: `<TARGET_WORKTREE>`
-- Expected branch: `<BRANCH>`
+- `AGENTS.md`
+- `.agents/skills/beesdk-plan-iteration/SKILL.md`
+
+## Основной проект
+
+- Project: `beesdk`
+- Worktree: `<MAIN_WORKTREE>`
+- Expected branch: `main`
 - Base branch: `main`
+- Mode: `<MODE>`
 - Roadmap context: `<ROADMAP_CONTEXT>`
 
-## Proposed task
+## Предлагаемая задача
 
 ```text
 <TASK_OR_IDEA>
 ```
 
-## Context and explicitly related consumers
+## Комментарии и ограничения
 
 ```text
 <CONTEXT_OR_NONE>
 ```
 
-Inspect BeeSDK only unless the task explicitly names a consumer project. Validate necessity, roadmap ownership, public API/dependency/security impact and prepare the result strictly as required by the planning skill.
+## Дополнительные проекты
+
+```text
+<ADDITIONAL_PROJECTS_OR_NONE>
+```
+
+Проверь актуальную реализацию, ROADMAP, границы репозиториев и необходимость задачи.
+
+Если задача оправдана, подготовь:
+
+1. формулировку итерации или standalone-задачи на русском;
+2. полный Issue на английском по repository Issue template;
+3. рекомендуемые branch и Conventional Commit;
+4. task-specific ограничения для реализации и проверки.
+
+Верни результат строго по planning skill.

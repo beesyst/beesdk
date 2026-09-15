@@ -5,30 +5,12 @@ import importlib.metadata
 from pathlib import Path
 
 import beesdk
+from beesdk.artifacts import ArtifactPort
+from beesdk.capabilities import CapabilityCaller, CapabilityResult, CapabilityStatus
+from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, ModuleResult
 
 
-def test_top_level_public_api_is_stable() -> None:
-    from beesdk import (
-        ArtifactPort,
-        AuthorityLevel,
-        CapabilityCaller,
-        CapabilityResult,
-        CapabilityStatus,
-        ModuleContext,
-        ModuleContract,
-        ModuleResult,
-    )
-
-    assert beesdk.__all__ == [
-        "ArtifactPort",
-        "AuthorityLevel",
-        "CapabilityCaller",
-        "CapabilityResult",
-        "CapabilityStatus",
-        "ModuleContext",
-        "ModuleContract",
-        "ModuleResult",
-    ]
+def test_public_contract_module_imports_are_stable() -> None:
     assert all(
         item is not None
         for item in (
@@ -42,6 +24,12 @@ def test_top_level_public_api_is_stable() -> None:
             ModuleResult,
         )
     )
+
+
+def test_package_initializer_is_empty() -> None:
+    package_root = Path(beesdk.__file__).parent
+
+    assert (package_root / "__init__.py").read_text(encoding="utf-8") == ""
 
 
 def test_distribution_has_no_runtime_dependencies() -> None:

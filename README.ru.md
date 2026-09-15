@@ -45,13 +45,8 @@ uv build
 ```python
 from typing import Any, Mapping
 
-from beesdk import (
-    AuthorityLevel,
-    CapabilityCaller,
-    CapabilityResult,
-    ModuleContext,
-    ModuleResult,
-)
+from beesdk.capabilities import CapabilityCaller, CapabilityResult
+from beesdk.modules import AuthorityLevel, ModuleContext, ModuleResult
 
 
 def handle(context: ModuleContext, caller: CapabilityCaller) -> ModuleResult:
