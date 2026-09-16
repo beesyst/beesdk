@@ -817,7 +817,7 @@ Stage 2 не создаёт runtime implementation.
 
 ## Итерация 2 — Host-provided capability caller injection
 
-**Status:** PLANNED
+**Status:** DONE
 
 ### Goal
 
