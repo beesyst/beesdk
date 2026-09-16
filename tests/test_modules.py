@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any, get_type_hints
 
+from beesdk.capabilities import CapabilityCaller, CapabilityResult, CapabilityStatus
 from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, ModuleResult
 
 
@@ -32,6 +34,35 @@ def test_module_context_preserves_compatibility_artifact_api_field() -> None:
     assert context.session_id == ""
     assert context.authority is None
     assert context.artifact_api is None
+    assert context.capability_caller is None
+
+
+class ExampleCapabilityCaller:
+    def call(
+        self,
+        capability_name: str,
+        payload: Mapping[str, Any],
+    ) -> CapabilityResult:
+        return CapabilityResult(
+            capability_name=capability_name,
+            status=CapabilityStatus.OK,
+            authority=AuthorityLevel.READ_ONLY,
+            summary="completed",
+            data=dict(payload),
+        )
+
+
+def test_module_context_accepts_host_provided_capability_caller() -> None:
+    caller = ExampleCapabilityCaller()
+    context = ModuleContext(
+        run_id="run-1",
+        case_type="example_case",
+        module_id="example",
+        capability_caller=caller,
+    )
+
+    assert isinstance(context.capability_caller, CapabilityCaller)
+    assert context.capability_caller is caller
 
 
 def test_module_contract_is_structural() -> None:

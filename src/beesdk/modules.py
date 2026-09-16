@@ -1,16 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Protocol, runtime_checkable
 
+from beesdk._authority import AuthorityLevel
 from beesdk.artifacts import ArtifactPort
-
-
-class AuthorityLevel(str, Enum):
-    READ_ONLY = "read_only"
-    DRAFT_ONLY = "draft_only"
-    EXECUTION_CAPABLE = "execution_capable"
+from beesdk.capabilities import CapabilityCaller
 
 
 @dataclass(frozen=True)
@@ -22,6 +17,7 @@ class ModuleContext:
     session_id: str = ""
     authority: AuthorityLevel | None = None
     artifact_api: ArtifactPort | None = None
+    capability_caller: CapabilityCaller | None = None
 
 
 @dataclass(frozen=True)

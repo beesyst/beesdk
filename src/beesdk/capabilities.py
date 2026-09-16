@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Protocol, runtime_checkable
 
-from beesdk.modules import AuthorityLevel
+from beesdk._authority import AuthorityLevel
 
 
 class CapabilityStatus(str, Enum):

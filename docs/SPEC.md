@@ -137,6 +137,7 @@ payload
 session_id
 authority
 artifact_api
+capability_caller
 ```
 
 Semantics:
@@ -178,6 +179,13 @@ May be absent where host has not bound it into the context yet.
 Optional host-provided `ArtifactPort`.
 
 The field name `artifact_api` is intentionally retained for compatibility with existing BeeAgent/module integration.
+
+### `capability_caller`
+
+Optional host-provided `CapabilityCaller`. It defaults to `None`, so existing
+`ModuleContext(...)` construction remains compatible. Modules can supply only a
+capability name and payload through this port; the host retains runtime
+identity, authority, policy and credentials.
 
 BeeSDK does not ship an artifact implementation.
 
