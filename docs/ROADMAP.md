@@ -30,6 +30,8 @@ ROADMAP не дублирует полные правила проекта:
 - authority/trust/security rules — в `docs/SECURITY.md`;
 - практическая разработка, package build и consumer integration — в `docs/DEV_GUIDE.md`.
 
+---
+
 ## Vision
 
 | Block                           | Statement                                                                                                                                                    |
@@ -45,12 +47,14 @@ ROADMAP не дублирует полные правила проекта:
 | **Capability principle**        | Module-facing capability contract остаётся narrow: module передаёт capability intent/payload, host добавляет identity, authority и policy.                   |
 | **Compatibility principle**     | Public imports, fields, enums, signatures, defaults и ownership semantics являются compatibility surface и не меняются ради косметики.                       |
 | **Package principle**           | BeeSDK должен устанавливаться и импортироваться независимо от всех consumer projects.                                                                        |
-| **Dependency rule**             | Для v0.1 runtime dependency target — Python standard library only.                                                                                           |
+| **Dependency rule**             | Runtime dependency target — Python standard library only, пока реальная contract need не докажет иное.                                                       |
 | **Typing principle**            | `py.typed` является частью package contract; type signatures рассматриваются как consumer-facing API.                                                        |
 | **Versioning principle**        | BeeSDK имеет собственный SemVer lifecycle, независимый от версий BeeAgent, ROP, BeeUI и других consumers.                                                    |
 | **Release principle**           | Обычные feature/fix PR не bump-ят version вручную; version/changelog/tag lifecycle ведётся release automation.                                               |
 | **Security rule**               | SDK не должен создавать execution, network egress, filesystem access, secret loading или другие runtime side effects только из-за import/use contracts.      |
 | **KISS rule**                   | BeeSDK должен оставаться маленьким. Новый framework layer, dependency или abstraction появляется только после реальной необходимости.                        |
+
+---
 
 ## Development principles
 
@@ -93,6 +97,8 @@ evidence
 authority
 ```
 
+---
+
 ## KISS roadmap rule
 
 ROADMAP BeeSDK намеренно должен оставаться коротким.
@@ -129,6 +135,8 @@ UI
 "так делают большие SDK"
 "давайте сразу заложим на будущее"
 ```
+
+---
 
 ## SDLC workflow for roadmap items
 
@@ -186,6 +194,8 @@ Tiny low-risk docs/test/chore maintenance может использовать с
 
 Kanban / GitHub Project не является обязательной частью BeeSDK workflow.
 
+---
+
 ## Status values
 
 Допустимые статусы iterations:
@@ -200,6 +210,8 @@ Kanban / GitHub Project не является обязательной част�
 - **FUTURE / orientation** — направление известно, но ещё не является утверждённым implementation scope.
 
 `FUTURE / orientation` не означает автоматического одобрения будущей архитектуры.
+
+---
 
 ## Roadmap item format
 
@@ -216,6 +228,8 @@ Kanban / GitHub Project не является обязательной част�
 ROADMAP фиксирует iteration-level contract.
 
 Подробные implementation requirements, конкретные файлы, полные payload examples, расширенные test matrices и verification evidence принадлежат Issue, implementation handoff и PR.
+
+---
 
 ## Global Definition of Done
 
@@ -241,9 +255,9 @@ ROADMAP фиксирует iteration-level contract.
 - package version не изменена вручную, если задача не является release-related;
 - significant iteration delivery зафиксирован в PR.
 
-## Change levels for verification
+---
 
-Для lightweight SDLC используются три уровня изменений.
+## Change levels for verification
 
 ### low-risk
 
@@ -311,6 +325,8 @@ Tiny low-risk maintenance может не иметь Issue/PR.
 
 DAST/IAST/fuzzing применяются только если изменение реально создаёт соответствующую поверхность.
 
+---
+
 ## Versioning and release rule
 
 BeeSDK имеет собственный SemVer lifecycle.
@@ -364,7 +380,7 @@ BeeSDK использует Conventional Commits и release automation.
 | `feat!:` / `fix!:` | breaking / MAJOR         |
 | `BREAKING CHANGE:` | breaking / MAJOR         |
 
-После bootstrap release release lifecycle должен управляться `release-please`:
+Release lifecycle управляется `release-please`:
 
 ```text
 commit history
@@ -395,25 +411,25 @@ Breaking public contract change требует:
 
 ## Product phases
 
-| Phase                                      | Status      | What it means                                                                                                                                               |
-| ------------------------------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Phase A — Contract foundation**          | IN PROGRESS | Создаётся standalone typed package, governance, package/release baseline и первые shared module/artifact/capability contracts.                              |
-| **Phase B — Consumer adoption validation** | FUTURE      | Existing contracts проверяются реальной миграцией BeeAgent и domain module consumers; SDK меняется только если integration выявляет настоящий contract gap. |
-| **Phase C — Scoped capability evolution**  | FUTURE      | Capability contracts уточняются после реального host/module integration evidence; runtime gateway implementation остаётся вне BeeSDK.                       |
-| **Phase D — Additional shared contracts**  | FUTURE      | Project/state или другие contracts рассматриваются только после появления реальных consumers и доказанной reusable semantics.                               |
+| Phase                                              | Status  | What it means                                                                                                                                                   |
+| -------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Phase A — Contract foundation**                  | DONE    | Создан standalone typed package, governance, package/release baseline и первые shared module/artifact/capability contracts.                                     |
+| **Phase B — Scoped capability integration**        | PLANNED | Реальный BeeDrill/BeeAgent integration выявил минимальный shared-contract gap: host должен иметь public способ передать существующий `CapabilityCaller` модулю. |
+| **Phase C — Broader consumer adoption validation** | FUTURE  | Existing contracts проверяются более широкой миграцией BeeAgent, `beeagent-rop` и других consumers; дублирование сокращается только где это реально оправдано.  |
+| **Phase D — Additional shared contracts**          | FUTURE  | Project/state или другие contracts рассматриваются только после появления реальных consumers и доказанной reusable semantics.                                   |
 
 ### Stages
 
 - **Stage 1 — Contract foundation:** standalone package, governance, module/artifact/capability contracts, tests, package/release baseline.
-- **Stage 2 — Consumer adoption validation:** проверка SDK через реальное потребление BeeAgent и `beeagent-rop`.
-- **Stage 3 — Scoped capability evolution:** contract refinement после использования в настоящем host runtime.
+- **Stage 2 — Scoped capability integration:** минимальное contract evolution, уже доказанное BeeDrill/BeeAgent integration need.
+- **Stage 3 — Broader consumer adoption validation:** дальнейшая migration existing consumers и reduction duplicated shared contracts.
 - **Stage 4 — Additional shared contracts:** только consumer-proven contracts; никакого заранее утверждённого framework expansion.
 
 ---
 
-## Этап 1 — Contract foundation
+# Этап 1 — Contract foundation
 
-### Purpose of stage
+## Purpose of stage
 
 Stage 1 создаёт минимальный самостоятельный BeeSDK.
 
@@ -440,15 +456,17 @@ BeeSDK = contracts
 BeeAgent / another host = implementations
 ```
 
-### Итерация 1 — Repository and core contract foundation v0.1.0
+---
+
+## Итерация 1 — Repository and core contract foundation v0.1.0
 
 **Status:** DONE
 
-#### Goal
+### Goal
 
-Создать standalone BeeSDK v0.1.0 как минимальный typed shared-contract package для Bee ecosystem, достаточный для последующей migration/validation через BeeAgent и `beeagent-rop`, но не содержащий host runtime implementation.
+Создать standalone BeeSDK v0.1.0 как минимальный typed shared-contract package для Bee ecosystem, достаточный для последующей consumer validation через BeeAgent и domain modules, но не содержащий host runtime implementation.
 
-#### Scope
+### Scope
 
 **Included**
 
@@ -473,12 +491,13 @@ BeeAgent / another host = implementations
   - `0.1.0`;
 
 - zero runtime dependencies;
-
 - stable public contract-module API:
 
 ```python
 from beesdk.artifacts import ArtifactPort
+
 from beesdk.capabilities import CapabilityCaller, CapabilityResult, CapabilityStatus
+
 from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, ModuleResult
 ```
 
@@ -505,7 +524,6 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - consumer-import guard tests;
 - capability authority-boundary tests;
 - package build verification;
-
 - project governance:
   - `AGENTS.md`;
   - `docs/ROADMAP.md`;
@@ -524,7 +542,6 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - GitHub Issue template;
 - GitHub PR template;
 - `CHANGELOG.md`;
-
 - SemVer/release baseline:
   - Conventional Commits;
   - release-please config;
@@ -532,7 +549,7 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
   - release-please workflow;
   - first `v0.1.0` contract baseline after SDK-1 completion.
 
-#### Excluded
+### Excluded
 
 Не входит в SDK-1:
 
@@ -568,7 +585,7 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - client-specific business semantics;
 - execution/egress implementation.
 
-#### Deliverable
+### Deliverable
 
 Standalone package:
 
@@ -583,17 +600,19 @@ beesdk 0.1.0
 - публикует minimal typed public contract;
 - не требует BeeAgent или другого Bee project at runtime;
 - не создаёт execution/storage/network side effects;
-- может быть использован как contract dependency на следующем consumer-adoption этапе.
+- может быть использован как contract dependency следующими real consumers.
 
 Expected public contract-module API:
 
 ```python
 from beesdk.artifacts import ArtifactPort
+
 from beesdk.capabilities import CapabilityCaller, CapabilityResult, CapabilityStatus
+
 from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, ModuleResult
 ```
 
-#### Acceptance criteria
+### Acceptance criteria
 
 - repository является самостоятельным Git repository;
 - package name = `beesdk`;
@@ -604,7 +623,6 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - `py.typed` входит в built package;
 - public contracts are available through explicit public contract modules;
 - `src/beesdk/__init__.py` remains empty;
-
 - BeeSDK не импортирует:
   - `beeagent`;
   - `beeagent-rop`;
@@ -615,12 +633,9 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - existing public field types/signatures не расширяются или сужаются без отдельного compatibility decision;
 - public field names не переименовываются только ради cleanup;
 - `artifact_api` сохраняется как compatibility field name в `ModuleContext`;
-
 - `ArtifactPort` остаётся minimal protocol;
 - `ArtifactPort` не раскрывает filesystem/path implementation;
-
 - `CapabilityCaller.call(...)` принимает только module-controlled capability intent/payload;
-
 - module-facing `CapabilityCaller` не принимает:
   - `authority`;
   - `module_id`;
@@ -629,7 +644,6 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
   - `case_type`;
 
 - `CapabilityResult` является result/evidence contract, а не grant of execution authority;
-
 - import BeeSDK не создаёт:
   - network calls;
   - storage access;
@@ -640,16 +654,14 @@ from beesdk.modules import AuthorityLevel, ModuleContext, ModuleContract, Module
 - tests покрывают positive public contract и critical negative boundaries;
 - package собирается через `uv build`;
 - package импортируется в собственном BeeSDK environment без consumer projects;
-
 - governance/docs согласованы между собой;
 - prompts/skills являются BeeSDK-local и не зависят от `.agents` другого repository;
 - Issue/PR templates отражают package/public API/compatibility/security impact;
-
 - release/version policy описана;
 - release-please baseline присутствует;
 - обычная implementation task не требует manual package version bump.
 
-#### Checks
+### Checks
 
 Required:
 
@@ -683,7 +695,6 @@ CapabilityCaller has no module_id argument
 CapabilityCaller has no run_id argument
 CapabilityCaller has no session_id argument
 CapabilityCaller has no case_type argument
-
 BeeSDK imports no consumer project
 runtime dependency list remains empty
 import has no runtime side effects
@@ -750,7 +761,7 @@ Repository hygiene:
 git diff --check
 ```
 
-#### DoD
+### DoD
 
 - BeeSDK exists as a standalone package/repository;
 - public API v0.1 is explicit;
@@ -769,23 +780,329 @@ git diff --check
 - SemVer/release baseline is defined;
 - release-please baseline is ready;
 - required security checks are complete;
-- package is ready to be consumed by the first real consumers;
+- package is ready to be consumed by real consumers;
 - SDK-1 delivery is reviewed through PR;
-- `v0.1.0` can become the first BeeSDK contract baseline.
+- `v0.1.0` is the first BeeSDK contract baseline.
 
 ---
 
-## Этап 2 — Consumer adoption validation
+# Этап 2 — Scoped capability integration
 
-### Purpose of stage
+## Purpose of stage
 
-Stage 2 проверяет, что BeeSDK contract действительно работает в настоящем ecosystem, а не только выглядит правильно внутри isolated repository.
+Stage 2 выполняет первое evidence-driven расширение BeeSDK после появления реального consumer integration need.
+
+BeeDrill Iteration 4 и соответствующий BeeAgent host integration выявили конкретный gap:
+
+```text
+CapabilityCaller exists
++
+ModuleContract.handle(context) exists
++
+ModuleContext has no public host-provided CapabilityCaller field
+```
+
+Сам `CapabilityCaller` остаётся достаточным и намеренно narrow.
+
+Проблема находится не в его signature, а в отсутствии shared public injection point между host и module.
+
+Основной invariant:
+
+```text
+module supplies intent
+host supplies authority
+```
+
+Stage 2 не создаёт runtime implementation.
+
+## Итерация 2 — Host-provided capability caller injection
+
+**Status:** PLANNED
+
+### Goal
+
+Закрыть конкретный shared-contract gap, доказанный BeeDrill/BeeAgent integration:
+
+> host должен иметь public typed способ передать существующий `CapabilityCaller` модулю через `ModuleContext`, не раскрывая и не передавая модулю контроль над runtime identity, authority, policy или credentials.
+
+Целевой flow:
+
+```text
+BeeAgent host
+→ creates ModuleContext
+→ injects host-bound CapabilityCaller
+→ module receives context
+→ module calls capability_name + payload
+→ host executes/refuses according to host policy
+```
+
+### Scope
+
+**Included**
+
+Добавить один backward-compatible optional host-provided field в `ModuleContext`:
+
+```python
+capability_caller: CapabilityCaller | None = None
+```
+
+Сохранить существующие public contracts:
+
+```text
+CapabilityCaller.call(capability_name, payload)
+ModuleContract.handle(context)
+CapabilityResult
+CapabilityStatus
+```
+
+Required ownership invariant:
+
+```text
+Module controls:
+
+capability_name
+payload
+```
+
+```text
+Host controls:
+
+module identity
+run identity
+session identity
+case type
+authority
+policy
+credentials
+execution
+```
+
+Изменение должно оставаться additive:
+
+- existing `ModuleContext(...)` construction без capability caller продолжает работать;
+- `capability_caller` defaults to `None`;
+- `ModuleContract.handle(context)` не меняется;
+- существующие public imports сохраняются;
+- existing artifact contract не меняется;
+- `CapabilityCaller.call(...)` не получает host-owned arguments.
+
+### Excluded
+
+Не входит в SDK-2:
+
+- capability runtime implementation;
+- `ScopedCapabilityGateway` implementation;
+- BeeAgent runtime implementation;
+- Surfpool implementation;
+- Solana implementation;
+- subprocess execution;
+- network/RPC implementation;
+- execution engine;
+- policy engine;
+- authority engine;
+- credential loading;
+- secret/config runtime;
+- retries;
+- module registry;
+- orchestration;
+- generic dependency injection;
+- generic provider abstraction;
+- HTTP/MCP/n8n execution;
+- changing:
+
+```text
+handle(context)
+```
+
+to:
+
+```text
+handle(context, caller)
+```
+
+- adding module-controlled:
+  - `authority`;
+  - `module_id`;
+  - `run_id`;
+  - `session_id`;
+  - `case_type`;
+  - credentials;
+  - policy.
+
+### Deliverable
+
+BeeSDK exposes one additive module-context contract:
+
+```python
+ModuleContext(
+    ...,
+    capability_caller=host_provided_caller,
+)
+```
+
+through which a host can provide an implementation of the already-existing public `CapabilityCaller` protocol.
+
+Expected consumer relationship:
+
+```text
+BeeDrill
+→ imports BeeSDK contracts only
+
+BeeAgent
+→ implements/provides CapabilityCaller
+→ injects it through ModuleContext
+
+BeeSDK
+→ knows neither BeeAgent nor BeeDrill implementation
+```
+
+Existing consumers that do not use capabilities continue constructing and consuming `ModuleContext` unchanged.
+
+### Acceptance criteria
+
+- `ModuleContext` exposes optional host-provided `CapabilityCaller`;
+- field defaults to `None`;
+- existing `ModuleContext` constructor usages remain valid;
+- `ModuleContract.handle(context)` remains unchanged;
+- `CapabilityCaller.call()` still accepts only:
+
+```text
+capability_name
+payload
+```
+
+- caller API does not accept:
+  - authority;
+  - module identity;
+  - run identity;
+  - session identity;
+  - case type;
+  - credentials;
+  - policy;
+
+- modules cannot self-assign host authority through the shared API;
+- `CapabilityResult` remains result/evidence, not authority grant;
+- BeeAgent can provide a structurally compatible caller;
+- BeeDrill can consume the caller without importing BeeAgent private internals;
+- no consumer-specific type enters BeeSDK;
+- BeeSDK adds no runtime implementation;
+- BeeSDK adds no I/O;
+- BeeSDK adds no network execution;
+- BeeSDK adds no subprocess behavior;
+- runtime dependency list remains empty;
+- existing public contract-module imports remain stable;
+- package remains independently installable.
+
+### Checks
+
+Required:
+
+```bash
+uv run pytest -q
+uv build
+```
+
+Contract tests:
+
+```text
+legacy ModuleContext construction without capability caller
+ModuleContext construction with capability caller
+capability_caller default is None
+structurally compatible CapabilityCaller is accepted
+ModuleContract.handle(context) signature unchanged
+CapabilityCaller.call signature unchanged
+CapabilityResult shape unchanged
+CapabilityStatus values unchanged
+public imports remain stable
+runtime dependencies remain empty
+```
+
+Negative authority tests:
+
+```text
+CapabilityCaller has no authority argument
+CapabilityCaller has no module_id argument
+CapabilityCaller has no run_id argument
+CapabilityCaller has no session_id argument
+CapabilityCaller has no case_type argument
+CapabilityCaller has no credentials argument
+CapabilityCaller has no policy argument
+CapabilityResult does not mutate ModuleContext authority
+```
+
+Consumer compatibility checks:
+
+```text
+BeeAgent can inject a host-owned caller
+BeeDrill can consume caller through BeeSDK contract
+BeeDrill requires no BeeAgent private import
+legacy consumers without caller remain compatible
+```
+
+Package checks:
+
+```text
+package import smoke
+wheel build
+sdist build
+py.typed remains included
+zero runtime dependency check
+consumer import guard
+```
+
+Quality/security:
+
+```text
+SAST
+explicit authority-boundary review
+negative authority tests
+consumer compatibility verification
+SCA only if dependency surface unexpectedly changes
+DAST not applicable
+IAST not applicable
+fuzzing not required for this bounded dataclass/protocol change
+```
+
+Repository hygiene:
+
+```bash
+git diff --check
+```
+
+### DoD
+
+- additive `ModuleContext.capability_caller` contract exists;
+- field defaults to `None`;
+- existing module consumers remain source-compatible;
+- `CapabilityCaller.call(...)` remains narrow;
+- module cannot provide host authority or runtime identity through shared capability API;
+- BeeAgent can provide a host-bound implementation;
+- BeeDrill can consume that implementation through BeeSDK only;
+- BeeSDK contains no BeeAgent/BeeDrill implementation;
+- no runtime implementation moved into BeeSDK;
+- no runtime dependencies were added;
+- tests pass;
+- package builds;
+- import smoke passes;
+- security/authority negative tests pass;
+- affected consumer compatibility is verified;
+- docs describing module/capability boundary are updated where required;
+- `pyproject.toml.version` is not manually changed;
+- SDK-2 delivery is reviewed through PR.
+
+---
+
+# Этап 3 — Broader consumer adoption validation
+
+## Purpose of stage
+
+Stage 3 проверяет более широкое применение BeeSDK в существующем ecosystem после того, как первый real capability integration уже доказал работоспособность shared host/module boundary.
 
 Ключевой принцип:
 
 > Consumer adoption implementation живёт в consumer repositories.
 
-То есть:
+Например:
 
 ```text
 BeeAgent migration
@@ -805,51 +1122,66 @@ BeeSDK repository меняется только если integration evidence п
 
 Consumer adoption не является разрешением расширять SDK заранее.
 
-### Итерация 2 — BeeAgent and ROP contract adoption validation
+SDK-3 не является prerequisite для BeeDrill Iteration 4 или BeeAgent Iteration 43.
+
+Эти integration paths относятся к конкретному capability work, уже покрытому SDK-2.
+
+---
+
+## Итерация 3 — Broader consumer contract adoption validation
 
 **Status:** FUTURE / orientation
 
-#### Goal
+### Goal
 
-Проверить BeeSDK v0.1 contracts через реальное потребление BeeAgent и `beeagent-rop`, убрать безопасно устранимое дублирование shared contracts и зафиксировать только реально выявленные compatibility gaps.
+Проверить BeeSDK contracts через более широкое реальное потребление BeeAgent, `beeagent-rop` и других подходящих consumers, убрать безопасно устранимое дублирование shared contracts и зафиксировать только реально выявленные compatibility gaps.
 
-Expected sequence:
+Possible sequence:
 
 ```text
-beesdk v0.1.0
+current BeeSDK contract
       ↓
-BeeAgent adoption
+selected BeeAgent shared-contract adoption
       ↓
-beeagent-rop adoption
+selected beeagent-rop shared-contract adoption
       ↓
 integration evidence
       ↓
-BeeSDK change only if proven necessary
+BeeSDK change only if separately proven necessary
 ```
 
-#### Expected scope
+### Scope
 
-Consumer-side work:
+Future consumer-side work may include:
 
 ```text
 BeeAgent
-→ imports shared contracts from beesdk
+→ broader migration from duplicated shared contracts to BeeSDK
 
 beeagent-rop
-→ imports shared contracts from beesdk where appropriate
+→ adopt BeeSDK shared contracts where appropriate
 
 duplicated shared definitions
-→ removed where compatibility permits
+→ remove where compatibility permits
 ```
 
-BeeSDK-side work допускается только при подтверждённом integration gap.
+Potential candidate areas may include:
 
-#### Excluded
+- shared module contracts;
+- artifact port compatibility;
+- authority enums/semantics;
+- capability result/caller usage;
+- removal of duplicate public/shared definitions.
 
-SDK-2 заранее не разрешает:
+Каждая migration должна выполняться только там, где dependency direction и compatibility действительно улучшаются.
+
+### Excluded
+
+SDK-3 заранее не разрешает:
 
 - redesign public API;
-- add runtime dependencies;
+- speculative BeeSDK expansion;
+- add runtime dependencies без отдельного доказанного need;
 - add module registry;
 - add capability gateway implementation;
 - add storage implementation;
@@ -857,36 +1189,55 @@ SDK-2 заранее не разрешает:
 - add config runtime;
 - add execution/egress;
 - add provider integration;
-- add plugin framework.
+- add plugin framework;
+- переносить domain semantics из consumer в BeeSDK;
+- forcing migration только ради удаления похожего кода;
+- менять уже стабильные contracts без concrete compatibility reason.
 
-#### Deliverable
+### Deliverable
 
-Real consumer evidence that BeeSDK contracts are usable across host and domain-module boundaries without reverse dependencies or private-internal coupling.
+Real consumer evidence that BeeSDK contracts can be adopted across host and domain-module boundaries without:
 
-#### Acceptance criteria
+```text
+reverse dependencies
+private-internal coupling
+authority leakage
+runtime ownership drift
+unnecessary duplicate contracts
+```
 
-- BeeAgent can depend on BeeSDK without circular dependency;
+Результатом iteration может быть:
+
+- consumer migration без BeeSDK code changes;
+- уменьшение duplicated shared definitions;
+- documented compatibility evidence;
+- отдельный новый BeeSDK roadmap item, если integration выявит новый доказанный shared-contract gap.
+
+### Acceptance criteria
+
+When SDK-3 is scheduled:
+
+- selected BeeAgent contracts consume BeeSDK where appropriate;
 - BeeAgent module runtime remains behavior-compatible;
-- BeeAgent can provide an implementation compatible with `ArtifactPort`;
-- BeeAgent can keep authority/policy/runtime identity host-owned;
-
-- `beeagent-rop` can depend on BeeSDK without importing BeeAgent private internals;
-- duplicated module contract definitions can be removed or reduced where safe;
-
+- BeeAgent keeps authority/policy/runtime identity host-owned;
+- `beeagent-rop` consumes BeeSDK only where shared semantics действительно совпадают;
+- `beeagent-rop` does not need BeeAgent private internals for shared contracts;
+- duplicated definitions are reduced only where safe;
 - normal module dispatch remains compatible;
 - artifact integration remains compatible;
 - capability boundary remains host-owned;
 - no domain semantics move into BeeSDK;
-
+- no circular dependency appears;
 - BeeSDK remains independently installable;
-- BeeSDK does not need BeeAgent installed;
-- BeeSDK does not gain runtime implementation merely to satisfy migration.
+- BeeSDK does not need consumers installed;
+- no consumer implementation is imported into BeeSDK;
+- BeeSDK does not gain runtime implementation merely to simplify migration.
 
-#### Checks
+### Checks
 
-Consumer-specific tests run inside each consumer repository.
+Consumer-specific tests run inside each affected consumer repository.
 
-BeeSDK changes, if any, require:
+BeeSDK changes, if any are separately approved, require:
 
 ```bash
 uv run pytest -q
@@ -900,137 +1251,42 @@ Required review questions:
 ```text
 Did adoption reveal a real SDK gap?
 Can the gap be solved consumer-side?
-Would the proposed SDK change be reusable by another consumer?
+Would a proposed SDK change represent stable shared semantics?
+Would another consumer reasonably use the same contract?
 Does the change preserve host-owned authority?
 Does it introduce runtime implementation into BeeSDK?
+Can duplicate ownership be removed without increasing coupling?
 ```
 
-#### DoD
+Quality/security:
 
-- BeeAgent consumes BeeSDK shared contracts where appropriate;
-- `beeagent-rop` consumes BeeSDK shared contracts where appropriate;
-- duplicate contract ownership is reduced;
+```text
+consumer compatibility tests
+dependency-direction review
+authority-boundary review where applicable
+SAST for security-sensitive shared-contract changes
+SCA only if dependency surface changes
+```
+
+### DoD
+
+SDK-3 считается завершённой, когда approved broader consumer-adoption scope выполнен и доказано, что:
+
+- selected consumers use BeeSDK shared contracts where appropriate;
+- duplicated shared contract ownership is reduced where safe;
 - runtime behavior remains compatible;
-- no circular dependency appears;
-- no consumer implementation is imported into BeeSDK;
-- any BeeSDK changes are evidence-driven;
+- no circular dependencies appear;
+- no consumer implementation moves into BeeSDK;
+- authority ownership remains host-side;
 - resulting compatibility boundaries are documented;
+- any additional BeeSDK change is evidence-driven and отдельно approved;
 - new BeeSDK release is made only if package contract actually changed.
 
 ---
 
-## Stage 3 — Scoped capability evolution
+# Этап 4 — Additional shared contracts
 
-### Purpose of stage
-
-Stage 3 возможен только после реального опыта использования `CapabilityCaller` в host/module integration.
-
-До этого текущий v0.1 capability contract считается намеренно минимальным.
-
----
-
-### Iteration SDK-3 — Scoped capability contract evolution
-
-**Status:** FUTURE / orientation
-
-#### Goal
-
-Уточнить shared capability contract только в том случае, если BeeAgent/ROP adoption докажет, что v0.1 module-facing boundary недостаточна для реального controlled execution flow.
-
-#### Required invariant
-
-Module controls:
-
-```text
-capability_name
-payload
-```
-
-Host controls:
-
-```text
-module identity
-run identity
-session identity
-case type
-authority
-policy
-credentials
-execution
-```
-
-#### Potential scope
-
-Только после evidence могут рассматриваться shared contracts для:
-
-- scoped capability caller binding;
-- host-generated invocation context;
-- common refusal/result semantics;
-- compatibility rules between module intent and host execution boundary.
-
-#### Excluded
-
-Заранее не одобрены:
-
-- `ScopedCapabilityGateway` implementation inside BeeSDK;
-- capability runtime;
-- network/provider implementation;
-- MCP implementation;
-- n8n implementation;
-- HTTP execution;
-- retries;
-- credential loading;
-- secret/config runtime;
-- execution engine;
-- policy engine;
-- plugin framework.
-
-#### Deliverable
-
-Если integration доказывает необходимость — минимально расширенный contract, который описывает shared boundary, но оставляет implementation host-owned.
-
-Если такой gap не найден, SDK-3 не требуется.
-
-#### Acceptance criteria
-
-Если SDK-3 открывается:
-
-- есть concrete integration evidence;
-- существующий `CapabilityCaller` действительно недостаточен;
-- новый contract нужен более чем одному implementation path или является стабильной host/module boundary;
-- caller не получает возможность self-assign authority;
-- credentials остаются host-owned;
-- runtime implementation не переносится в SDK;
-- public compatibility/migration impact определён;
-- negative authority tests существуют.
-
-#### Checks
-
-Expected:
-
-```bash
-uv run pytest -q
-uv build
-```
-
-Required security checks:
-
-```text
-SAST
-negative authority tests
-consumer compatibility tests
-SCA only if dependencies change
-```
-
-#### DoD
-
-SDK-3 считается выполненной только если реальный integration gap устранён меньшим возможным shared-contract изменением.
-
----
-
-## Stage 4 — Additional shared contracts
-
-### Purpose of stage
+## Purpose of stage
 
 Stage 4 существует только как orientation для будущих reusable contracts.
 
@@ -1038,15 +1294,15 @@ Stage 4 существует только как orientation для будущи
 
 ---
 
-### Iteration SDK-4 — Project/state contracts when proven necessary
+## Итерация 4 — Project/state contracts when proven necessary
 
 **Status:** FUTURE / orientation
 
-#### Goal
+### Goal
 
-Рассмотреть project/state contracts только если реальные consumers покажут общую stable semantic boundary, которую невозможно корректно поддерживать локально.
+Рассмотреть project/state или другие shared contracts только если реальные consumers покажут общую stable semantic boundary, которую невозможно корректно поддерживать локально.
 
-#### Candidate areas
+### Candidate areas
 
 Только после evidence могут рассматриваться contracts вроде:
 
@@ -1059,7 +1315,7 @@ Job identity
 
 Но ни один из них не считается заранее approved.
 
-#### Excluded
+### Excluded
 
 До отдельного evidence BeeSDK не должен определять:
 
@@ -1076,7 +1332,18 @@ Database
 filesystem state backend
 ```
 
-#### Required evidence
+Также не должны появляться автоматически:
+
+```text
+generic execution framework
+provider framework
+network runtime
+plugin marketplace
+workflow engine
+secret manager
+```
+
+### Required evidence
 
 Новый contract должен доказать:
 
@@ -1087,7 +1354,7 @@ filesystem state backend
 - отсутствие переноса runtime implementation в SDK;
 - compatibility/security value.
 
-#### Deliverable
+### Deliverable
 
 Может быть:
 
@@ -1097,7 +1364,7 @@ filesystem state backend
 
 Все три результата допустимы.
 
-#### DoD
+### DoD
 
 SDK-4 не обязана быть реализована.
 
@@ -1109,7 +1376,7 @@ no SDK change
 
 ---
 
-## Future contract rule
+# Future contract rule
 
 После SDK-1 новые roadmap iterations не создаются автоматически по номеру.
 
@@ -1125,6 +1392,25 @@ real consumer gap
 → compatibility/security verification
 → PR
 → release if needed
+```
+
+Пример текущей последовательности:
+
+```text
+SDK-1
+→ minimal contracts established
+
+BeeDrill/BeeAgent integration need appears
+→ concrete ModuleContext capability injection gap proven
+
+SDK-2
+→ minimal additive contract change
+
+later broader ecosystem adoption
+→ SDK-3 when actually scheduled
+
+new reusable contract need
+→ SDK-4 only if separately proven
 ```
 
 Неправильный flow:
@@ -1144,9 +1430,9 @@ BeeSDK считается успешным не по количеству iterat
 
 ---
 
-## Related project boundaries
+# Related project boundaries
 
-### BeeAgent
+## BeeAgent
 
 BeeAgent остаётся primary host/runtime и владеет:
 
@@ -1161,11 +1447,49 @@ capability execution
 approvals
 connectors
 execution/egress
+process lifecycle
+timeouts
+cleanup
+credentials
 ```
 
 BeeSDK не должен поглощать эту ответственность.
 
-### `beeagent-rop`
+BeeAgent может реализовывать BeeSDK protocols и передавать host-owned implementations через shared contracts.
+
+---
+
+## BeeDrill
+
+BeeDrill является domain module consumer BeeSDK contracts.
+
+BeeDrill может владеть:
+
+```text
+drill domain contracts
+scenario semantics
+expected controls
+evidence interpretation
+metrics
+deterministic verdicts
+```
+
+BeeDrill не должен получать через BeeSDK:
+
+```text
+arbitrary execution authority
+host identity control
+runtime policy control
+credentials
+process lifecycle ownership
+RPC endpoint ownership
+```
+
+BeeDrill Iteration 4 является concrete integration evidence для SDK-2.
+
+---
+
+## `beeagent-rop`
 
 `beeagent-rop` остаётся domain consumer и владеет:
 
@@ -1181,7 +1505,11 @@ recommendations
 
 BeeSDK не должен содержать ROP-specific taxonomy или business rules.
 
-### BeeScan
+Broader `beeagent-rop` contract adoption относится к SDK-3, когда эта migration будет отдельно scheduled.
+
+---
+
+## BeeScan
 
 BeeScan может стать future consumer shared contracts.
 
@@ -1198,7 +1526,9 @@ tool execution
 
 Shared contract должен сначала доказать reusable semantics.
 
-### BeeUI
+---
+
+## BeeUI
 
 BeeUI остаётся отдельным generic presentation package.
 
@@ -1210,7 +1540,9 @@ beeui -> beesdk
 
 Такая dependency допускается только при отдельном доказанном shared contract need.
 
-### Bee Dev MCP
+---
+
+## Bee Dev MCP
 
 Bee Dev MCP остаётся отдельным development/orchestration tool.
 
@@ -1228,7 +1560,7 @@ BeeSDK
 
 ---
 
-## Related process documents
+# Related process documents
 
 Для выполнения roadmap iterations вместе с этим ROADMAP используются:
 
@@ -1239,7 +1571,9 @@ BeeSDK
 - `docs/SECURITY.md` — authority, capability, artifact, dependency и trust-boundary rules;
 - `AGENTS.md` — repository-level development/AI instructions.
 
-## Summary
+---
+
+# Summary
 
 BeeSDK развивается по принципу:
 
@@ -1248,6 +1582,28 @@ extract only what is already needed
 → validate through real consumers
 → fix only proven contract gaps
 → add the next abstraction only when evidence requires it
+```
+
+Текущая последовательность:
+
+```text
+SDK-1 — Repository and core contract foundation
+DONE
+
+        ↓
+
+SDK-2 — Host-provided capability caller injection
+PLANNED
+
+        ↓
+
+SDK-3 — Broader consumer contract adoption validation
+FUTURE / orientation
+
+        ↓
+
+SDK-4 — Project/state contracts when proven necessary
+FUTURE / orientation
 ```
 
 Целевое состояние — не большой framework.
