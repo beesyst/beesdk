@@ -182,10 +182,7 @@ The field name `artifact_api` is intentionally retained for compatibility with e
 
 ### `capability_caller`
 
-Optional host-provided `CapabilityCaller`. It defaults to `None`, so existing
-`ModuleContext(...)` construction remains compatible. Modules can supply only a
-capability name and payload through this port; the host retains runtime
-identity, authority, policy and credentials.
+Optional host-provided `CapabilityCaller`. It defaults to `None`, so existing `ModuleContext(...)` construction remains compatible. Modules can supply only a capability name and payload through this port; the host retains runtime identity, authority, policy and credentials.
 
 BeeSDK does not ship an artifact implementation.
 
