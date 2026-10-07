@@ -36,17 +36,17 @@ Tool, authority and read-only restrictions apply only to the current task and ag
 
 When producing a prompt for another agent, do not copy the current agent's tool restrictions unless they are explicitly required for that executor.
 
-Planning, prompt-preparation and review tasks may use Bee Dev MCP in read-only mode.
+Planning, prompt-preparation and review tasks may use BeeMCP in read-only mode.
 
-Implementation and correction prompts are executed by Copilot or Codex. They must instruct the executor to work in the exact worktree using its available local repository tools. They must not require Bee Dev MCP, an MCP target, review mode or read-only behavior.
+Implementation and correction prompts are executed by Copilot or Codex. They must instruct the executor to work in the exact worktree using its available local repository tools. They must not require BeeMCP, an MCP target, review mode or read-only behavior.
 
-## Bee Dev MCP rules
+## BeeMCP rules
 
-These rules apply only when the current task explicitly selects Bee Dev MCP for read-only planning, prompt preparation or review.
+These rules apply only when the current task explicitly selects BeeMCP for read-only planning, prompt preparation or review.
 
-Bee Dev MCP is read-only.
+BeeMCP is read-only.
 
-Available Bee Dev MCP tools:
+Available BeeMCP tools:
 
 - `list_projects`;
 - `list_worktrees`;
@@ -352,7 +352,7 @@ As applicable, verification may include:
 
 DAST and IAST are normally not applicable while BeeSDK has no network-facing runtime, but use them when the actual approved change introduces a relevant surface.
 
-Review agents using Bee Dev MCP cannot execute commands.
+Review agents using BeeMCP cannot execute commands.
 
 They may use supplied command output as evidence but must:
 

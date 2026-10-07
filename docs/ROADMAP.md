@@ -1542,14 +1542,14 @@ beeui -> beesdk
 
 ---
 
-## Bee Dev MCP
+## BeeMCP
 
-Bee Dev MCP остаётся отдельным development/orchestration tool.
+BeeMCP остаётся отдельным development/orchestration tool.
 
 Его отсутствие package-version lifecycle не является моделью для BeeSDK:
 
 ```text
-Bee Dev MCP
+BeeMCP
 → development service/tool
 
 BeeSDK

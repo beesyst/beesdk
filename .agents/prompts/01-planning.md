@@ -1,6 +1,6 @@
 # BeeSDK planning
 
-Используй только Bee Dev MCP.
+Используй только BeeMCP.
 
 Прочитай:
 
