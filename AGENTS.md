@@ -288,6 +288,13 @@ Rules:
 - Keep runtime dependencies empty while the approved BeeSDK baseline requires zero runtime dependencies.
 - Do not change `pyproject.toml.version` for ordinary work.
 
+## Git safety
+
+- Work only in the specified worktree and current branch.
+- Never create, switch, delete, or rename branches or worktrees without explicit user approval.
+- Never commit, push, merge, reset, or discard changes without explicit user approval.
+- Preserve all existing uncommitted changes.
+
 ## Documentation and contracts
 
 Update relevant documentation when implementation changes:
